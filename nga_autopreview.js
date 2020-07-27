@@ -60,21 +60,22 @@ if (window.location.href.indexOf('post.php') !== -1) {
         post_content.parentElement.appendChild(autopreview_content);
         post_content.parentElement.parentElement.classList.add('postrow');
         // textarea input|blur|focus
+        var preview = function () {
+          preview_tip_span.innerHTML = '<b>自动预览：</b>开启';
+          autopreview_content.innerHTML = autopreview();
+        };
         post_content.addEventListener('input', function (e) {
           if (e.target.value.length <= 10000) {
-            preview_tip_span.innerHTML = '<b>自动预览：</b>开启';
-            autopreview_content.innerHTML = autopreview();
+            preview();
           } else {
             preview_tip_span.innerHTML = '<b>自动预览：</b>内容过长(>10000)，预览框在失去焦点时刷新';
           }
         });
         post_content.addEventListener('blur', function () {
-          preview_tip_span.innerHTML = '<b>自动预览：</b>开启';
-          autopreview_content.innerHTML = autopreview();
+          preview();
         });
         post_content.addEventListener('focus', function () {
-          preview_tip_span.innerHTML = '<b>自动预览：</b>开启';
-          autopreview_content.innerHTML = autopreview();
+          preview();
         });
         // textarea resize
         var observer = new MutationObserver(function () {
@@ -95,6 +96,93 @@ if (window.location.href.indexOf('post.php') !== -1) {
         // remove old buttons
         autopreview_button.parentElement.removeChild(autopreview_button);
         preview_button.parentElement.removeChild(preview_button);
+        // 快捷键 start
+        postfunc.last_color = 'royalblue';
+        postfunc.last_size = '120%';
+        postfunc.remember1 = '';
+        postfunc.remember2 = '';
+        postfunc.addTag = function (tag, value) {
+          var selectionStart = post_content.selectionStart;
+          var selectionEnd = post_content.selectionEnd;
+          this.addText('[' + tag + (value ? '=' + value : '') + ']' + this.getSelectText() + '[/' + tag + ']');
+          if (selectionStart == selectionEnd) {
+            post_content.selectionStart = post_content.selectionEnd = selectionStart + ('[' + tag + (value ? '=' + value : '') + ']').length;
+          } else {
+            post_content.selectionStart = selectionStart;
+            post_content.selectionEnd = selectionEnd + ('[' + tag + (value ? '=' + value : '') + ']' + '[/' + tag + ']').length;
+          }
+          if (tag == 'color') {
+            this.last_color = value;
+          } else if (tag == 'size') {
+            this.last_size = value;
+          }
+        };
+        post_content.addEventListener('keydown', function (e) {
+          if ((e.keyCode == 'B'.charCodeAt() || e.keyCode == 'b'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('b');
+            preview();
+          } else if ((e.keyCode == 'U'.charCodeAt() || e.keyCode == 'u'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('u');
+            preview();
+          } else if ((e.keyCode == 'I'.charCodeAt() || e.keyCode == 'i'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('i');
+            preview();
+          } else if ((e.keyCode == 'H'.charCodeAt() || e.keyCode == 'h'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('h');
+            preview();
+          } else if ((e.keyCode == 'D'.charCodeAt() || e.keyCode == 'd'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('del');
+            preview();
+          } else if ((e.keyCode == 'Q'.charCodeAt() || e.keyCode == 'q'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('quote');
+            preview();
+          } else if ((e.keyCode == 'C'.charCodeAt() || e.keyCode == 'c'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('color', postfunc.last_color);
+            preview();
+          } else if ((e.keyCode == 'S'.charCodeAt() || e.keyCode == 's'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
+            e.returnValue = false;
+            postfunc.addTag('size', postfunc.last_size);
+            preview();
+          } else if (e.keyCode == '1'.charCodeAt() && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.remember1 = postfunc.getSelectText();
+          } else if (e.keyCode == '2'.charCodeAt() && e.ctrlKey && !e.shiftKey) {
+            e.returnValue = false;
+            postfunc.remember2 = postfunc.getSelectText();
+          } else if (e.keyCode == '1'.charCodeAt() && e.ctrlKey && e.shiftKey) {
+            e.returnValue = false;
+            var selectionStart = post_content.selectionStart;
+            var selectionEnd = post_content.selectionEnd;
+            post_content.value = post_content.value.substring(0, selectionStart) + postfunc.remember1 + post_content.value.substring(selectionStart);
+            post_content.selectionStart = selectionStart + postfunc.remember1.length;
+            post_content.selectionEnd = selectionEnd + postfunc.remember1.length;
+            preview();
+          } else if (e.keyCode == '2'.charCodeAt() && e.ctrlKey && e.shiftKey) {
+            e.returnValue = false;
+            var selectionStart = post_content.selectionStart;
+            var selectionEnd = post_content.selectionEnd;
+            post_content.value = post_content.value.substring(0, selectionEnd) + postfunc.remember2 + post_content.value.substring(selectionEnd);
+            post_content.selectionStart = selectionStart;
+            post_content.selectionEnd = selectionEnd;
+            preview();
+          } else if ((e.keyCode == 'Q'.charCodeAt() || e.keyCode == 'q'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
+            e.returnValue = false;
+            var selectionStart = post_content.selectionStart;
+            var selectionEnd = post_content.selectionEnd;
+            post_content.value = post_content.value.substring(0, selectionStart) + postfunc.remember1 + post_content.value.substring(selectionStart, selectionEnd) + postfunc.remember2 + post_content.value.substring(selectionEnd);
+            post_content.selectionStart = selectionStart + postfunc.remember1.length;
+            post_content.selectionEnd = selectionEnd + postfunc.remember1.length;
+            preview();
+          }
+        });
+        // 快捷键 end
       });
       preview_button.parentElement.insertBefore(autopreview_button, preview_button);
       break;
