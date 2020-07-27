@@ -96,7 +96,11 @@ if (window.location.href.indexOf('post.php') !== -1) {
         // remove old buttons
         autopreview_button.parentElement.removeChild(autopreview_button);
         preview_button.parentElement.removeChild(preview_button);
-        // 快捷键 start
+        // hotkey start
+        var preventDefault = function (e) {
+          e.returnValue = false;
+          e.preventDefault(e);
+        };
         postfunc.last_color = 'royalblue';
         postfunc.last_size = '120%';
         postfunc.remember1 = '';
@@ -119,45 +123,45 @@ if (window.location.href.indexOf('post.php') !== -1) {
         };
         post_content.addEventListener('keydown', function (e) {
           if ((e.keyCode == 'B'.charCodeAt() || e.keyCode == 'b'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('b');
             preview();
           } else if ((e.keyCode == 'U'.charCodeAt() || e.keyCode == 'u'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('u');
             preview();
           } else if ((e.keyCode == 'I'.charCodeAt() || e.keyCode == 'i'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('i');
             preview();
           } else if ((e.keyCode == 'H'.charCodeAt() || e.keyCode == 'h'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('h');
             preview();
           } else if ((e.keyCode == 'D'.charCodeAt() || e.keyCode == 'd'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('del');
             preview();
           } else if ((e.keyCode == 'Q'.charCodeAt() || e.keyCode == 'q'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('quote');
             preview();
           } else if ((e.keyCode == 'C'.charCodeAt() || e.keyCode == 'c'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('color', postfunc.last_color);
             preview();
           } else if ((e.keyCode == 'S'.charCodeAt() || e.keyCode == 's'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.addTag('size', postfunc.last_size);
             preview();
           } else if (e.keyCode == '1'.charCodeAt() && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.remember1 = postfunc.getSelectText();
           } else if (e.keyCode == '2'.charCodeAt() && e.ctrlKey && !e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             postfunc.remember2 = postfunc.getSelectText();
           } else if (e.keyCode == '1'.charCodeAt() && e.ctrlKey && e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             var selectionStart = post_content.selectionStart;
             var selectionEnd = post_content.selectionEnd;
             post_content.value = post_content.value.substring(0, selectionStart) + postfunc.remember1 + post_content.value.substring(selectionStart);
@@ -165,7 +169,7 @@ if (window.location.href.indexOf('post.php') !== -1) {
             post_content.selectionEnd = selectionEnd + postfunc.remember1.length;
             preview();
           } else if (e.keyCode == '2'.charCodeAt() && e.ctrlKey && e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             var selectionStart = post_content.selectionStart;
             var selectionEnd = post_content.selectionEnd;
             post_content.value = post_content.value.substring(0, selectionEnd) + postfunc.remember2 + post_content.value.substring(selectionEnd);
@@ -173,7 +177,7 @@ if (window.location.href.indexOf('post.php') !== -1) {
             post_content.selectionEnd = selectionEnd;
             preview();
           } else if ((e.keyCode == 'Q'.charCodeAt() || e.keyCode == 'q'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
-            e.returnValue = false;
+            preventDefault(e);
             var selectionStart = post_content.selectionStart;
             var selectionEnd = post_content.selectionEnd;
             post_content.value = post_content.value.substring(0, selectionStart) + postfunc.remember1 + post_content.value.substring(selectionStart, selectionEnd) + postfunc.remember2 + post_content.value.substring(selectionEnd);
@@ -182,7 +186,7 @@ if (window.location.href.indexOf('post.php') !== -1) {
             preview();
           }
         });
-        // 快捷键 end
+        // hotkey end
       });
       preview_button.parentElement.insertBefore(autopreview_button, preview_button);
       break;
