@@ -101,8 +101,8 @@ if (window.location.href.indexOf('post.php') !== -1) {
           e.returnValue = false;
           e.preventDefault(e);
         };
-        postfunc.last_color = 'royalblue';
-        postfunc.last_size = '120%';
+        postfunc.last_color = commonui.userCache.get('autopreview_last_color') || 'royalblue';
+        postfunc.last_size = commonui.userCache.get('autopreview_last_size') || '120%';
         postfunc.remember1 = '';
         postfunc.remember2 = '';
         postfunc.addTag = function (tag, value) {
@@ -117,8 +117,10 @@ if (window.location.href.indexOf('post.php') !== -1) {
           }
           if (tag == 'color') {
             this.last_color = value;
+            commonui.userCache.set('autopreview_last_color', value);
           } else if (tag == 'size') {
             this.last_size = value;
+            commonui.userCache.set('autopreview_last_size', value);
           }
         };
         post_content.addEventListener('keydown', function (e) {
