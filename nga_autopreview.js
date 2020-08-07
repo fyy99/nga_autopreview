@@ -1,15 +1,20 @@
 // ==UserScript==
-// @name         nga_autopreview
-// @version      0.12
-// @namespace    https://bbs.nga.cn/read.php?tid=22716736
-// @description  https://bbs.nga.cn/read.php?tid=22716736
-// @author       fyy99
-// @match        *://bbs.nga.cn/post.php*
-// @match        *://ngabbs.com/post.php*
-// @match        *://nga.178.com/post.php*
-// @note         v0.11 更新了格式刷的快捷键按钮  统一了油猴脚本与论坛用户脚本的代码
-// @note         v0.12 修复油猴脚本不可用的bug
-// @grant        none
+// @namespace         https://github.com/fyy99/nga_autopreview
+// @name              nga_autopreview
+// @name:zh           NGA自动预览
+// @name:zh-CN        NGA自动预览
+// @description       https://bbs.nga.cn/read.php?tid=22716736
+// @description:zh    https://bbs.nga.cn/read.php?tid=22716736
+// @description:zh-CN https://bbs.nga.cn/read.php?tid=22716736
+// @version           0.13
+// @author            fyy99
+// @match             *://bbs.nga.cn/post.php*
+// @match             *://ngabbs.com/post.php*
+// @match             *://nga.178.com/post.php*
+// @run-at            document-end
+// @note              v0.11 更新了格式刷的快捷键按钮  统一了油猴脚本与论坛用户脚本的代码
+// @note              v0.13 更新名称
+// @grant             none
 // ==/UserScript==
 
 (function() {
