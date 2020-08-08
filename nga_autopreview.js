@@ -6,7 +6,7 @@
 // @description       https://bbs.nga.cn/read.php?tid=22716736
 // @description:zh    https://bbs.nga.cn/read.php?tid=22716736
 // @description:zh-CN https://bbs.nga.cn/read.php?tid=22716736
-// @version           0.13
+// @version           0.14
 // @author            fyy99
 // @match             *://bbs.nga.cn/post.php*
 // @match             *://ngabbs.com/post.php*
@@ -14,6 +14,7 @@
 // @run-at            document-end
 // @note              v0.11 更新了格式刷的快捷键按钮  统一了油猴脚本与论坛用户脚本的代码
 // @note              v0.13 更新名称
+// @note              v0.14 新增2个快捷键
 // @grant             none
 // ==/UserScript==
 
@@ -169,6 +170,14 @@
                         } else if ((e.keyCode == 'Q'.charCodeAt() || e.keyCode == 'q'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
                             preventDefault(e);
                             postfunc.addTag('quote');
+                            preview();
+                        } else if ((e.keyCode == 'E'.charCodeAt() || e.keyCode == 'e'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+                            preventDefault(e);
+                            postfunc.addTag('align', 'center');
+                            preview();
+                        } else if ((e.keyCode == 'G'.charCodeAt() || e.keyCode == 'g'.charCodeAt()) && e.ctrlKey && !e.shiftKey) {
+                            preventDefault(e);
+                            postfunc.addTag('collapse', '点击显示折叠内容');
                             preview();
                         } else if ((e.keyCode == 'C'.charCodeAt() || e.keyCode == 'c'.charCodeAt()) && e.ctrlKey && e.shiftKey) {
                             preventDefault(e);
